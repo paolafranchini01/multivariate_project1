@@ -1,0 +1,6 @@
+library(tidyverse)
+
+library(readr)
+ESS11 <- read_csv("data/ESS11.csv")
+
+View(ESS11)
