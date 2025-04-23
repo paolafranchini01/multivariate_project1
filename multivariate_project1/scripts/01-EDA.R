@@ -29,6 +29,12 @@ ESS11$ccnthum[ESS11$ccnthum %in% c(55, 77, 88, 99)] <- NA
 #very few and also didn't seem to work with the following recoding.
 #We should look into it though! I think it may be methodologically inappropriate.
 
+#I agree that the responses are really few, but I've looked at the dataset across all countries, 
+#and the answers saying 'I don't think climate change is happening' are not negligible in a few countries—like Cyprus, 
+#Greece, Slovakia, and Lithuania—while in all the others, I agree with you that they're minimal. 
+#Maybe we should also consider whether we want to focus on just one country, compare a few countries, 
+#or include all countries from the ESS11 in our analysis.
+
 #I want to get a frequency table, so I'm going to make my variable a factor
 #based on the answers of the questionnaire
 
@@ -57,7 +63,6 @@ ggplot(ESS11, aes(x = clim_change_cause)) +
        y = "Count")
 
 ggsave("plots/climate_causes_beliefs.png", width = 8, height = 6, dpi = 300)
-
 
 
 
@@ -100,4 +105,18 @@ ESS11 |>
 
 ggsave("plots/climate_resp_beliefs.png", width = 8, height = 6, dpi = 300)
 
+edulvlb #Highest level of education; What is the highest level of education you have successfully completed?
+class(ESS11$edulvlb) #verifying v. type -> numeric
+summary(ESS11$edulvlb) #The response scale values are a bit hard to interpret because the types of education 
+#are labeled differently depending on the European country. 
+#If we look at edlvfit (highest education level, Italy), which shows the values for Italy, it's easier for us
+#to understand.
+prop.table(table(ESS11$edulvlb))
+#This indicates the highest level of education
+#There are also separate variables for each country
+#It could be interesting to do an analysis by grouping countries based on their 
+#average level of education (for example, countries A and B with low average education, 
+#countries C and D with medium, and country E with high), and then see how attitudes 
+#toward climate change vary across those groups
+summary(ESS11$edlvfit)
 
