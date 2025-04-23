@@ -4,22 +4,27 @@ author: "Io"
 date: "2025-04-23"
 output: html_document
 ---
+
 ## Introduction
 
 This report explores the relationship between education and perceptions of climate change, using data from the European Social Survey (ESS Round 11).
 
 #### Loading Packages
+
 ```{r}
 library(ggplot2)
 library(dplyr)
 library(readr)
+library(knitr)
 
 ```
 
 #### Loading the dataset
+
 ```{r}
 ESS11 <- read_csv("data/ESS11.csv")
 ```
+
 ## Exploratory data analysis
 
 Some preliminary steps are taken in order to clean the data from NAs and to visualize variable distributions and some basic bivariate relationships.
@@ -27,6 +32,7 @@ Some preliminary steps are taken in order to clean the data from NAs and to visu
 #### Preparing the data
 
 Beliefs about the causes of climate change - natural vs. human:
+
 ```{r}
 ESS11$ccnthum[ESS11$ccnthum %in% c(55, 77, 88, 99)] <- NA
 
@@ -56,22 +62,57 @@ ESS11 <- ESS11 %>%
 
 Frequency tables are employed in order to better understand the distribution of the variables.
 
+###### Climate change and perceived causes
+
 ```{r}
-summary(clim_change_cause)
-prop.table(table(clim_change_cause))
+summary(ESS11$clim_change_cause)
 
+prop_table <- prop.table(table(clim_change_cause))
+
+table_out <- data.frame(
+  Cause = names(prop_table),
+  Percentage = round(as.numeric(prop_table) * 100, 1)
+)
+kable(table_out, caption = "Beliefs about causes of climate change (in %)")
+
+```
+
+###### Climate change and individual responsibility
+
+```{r}
 summary(ESS11$clim_change_resp)
-prop.table(table(ESS11$clim_change_resp))
 
+prop_table <- prop.table(table(ESS11$clim_change_resp))
+
+table_out <- data.frame(
+  Responsibility = names(prop_table),
+  Percentage = round(as.numeric(prop_table) * 100, 1)
+)
+
+kable(table_out, caption = "Perceived personal responsibility for reducing climate change (in %)")
+
+```
+
+###### Education
+```{r}
 summary(ESS11$edulvlb)
 prop.table(table(ESS11$edulvlb))
+table_out <- data.frame(
+  Education = names(prop_table),
+  Percentage = round(as.numeric(prop_table) * 100, 1)
+)
+kable(table_out, caption = "Percentage of respondents by education level")
+
 
 summary(ESS11$edlvfit)
 ```
 
+
+
 #### Plots
 
 Bar graphs allow for the visualization of the univariate distribution of the variables associated with beliefs about climate change.
+
 ```{r}
 ggplot(ESS11, aes(x = clim_change_cause)) +
   geom_bar(color = "purple", fill = "purple") +
@@ -93,5 +134,3 @@ ESS11 |>
        x = "Perceived responsibility",
        y = "Count")
 ```
-
-

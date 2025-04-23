@@ -374,7 +374,8 @@ library(dplyr)</code></pre>
 <pre><code>## I seguenti oggetti sono mascherati da &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(readr)</code></pre>
+<pre class="r"><code>library(readr)
+library(knitr)</code></pre>
 </div>
 <div id="loading-the-dataset" class="section level4">
 <h4>Loading the dataset</h4>
@@ -421,24 +422,91 @@ ESS11 &lt;- ESS11 %&gt;%
 <h4>Descriptive statistics</h4>
 <p>Frequency tables are employed in order to better understand the
 distribution of the variables.</p>
-<pre class="r"><code>summary(clim_change_cause)</code></pre>
-<pre><code>##          Entirely natural            Mainly natural Equally natural and human 
-##                       888                      2656                     16763 
-##              Mainly human            Entirely human                      NA&#39;s 
-##                     15130                      3566                      1153</code></pre>
-<pre class="r"><code>prop.table(table(clim_change_cause))</code></pre>
-<pre><code>## clim_change_cause
-##          Entirely natural            Mainly natural Equally natural and human 
-##                0.02276748                0.06809733                0.42978745 
-##              Mainly human            Entirely human 
-##                0.38791888                0.09142886</code></pre>
+<div id="climate-change-and-perceived-causes" class="section level6">
+<h6>Climate change and perceived causes</h6>
+<pre class="r"><code>summary(ESS11$clim_change_cause)</code></pre>
+<pre><code>## Warning: Unknown or uninitialised column: `clim_change_cause`.</code></pre>
+<pre><code>## Length  Class   Mode 
+##      0   NULL   NULL</code></pre>
+<pre class="r"><code>prop_table &lt;- prop.table(table(clim_change_cause))
+
+table_out &lt;- data.frame(
+  Cause = names(prop_table),
+  Percentage = round(as.numeric(prop_table) * 100, 1)
+)
+kable(table_out, caption = &quot;Beliefs about causes of climate change (in %)&quot;)</code></pre>
+<table>
+<caption>Beliefs about causes of climate change (in %)</caption>
+<thead>
+<tr class="header">
+<th align="left">Cause</th>
+<th align="right">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Entirely natural</td>
+<td align="right">2.3</td>
+</tr>
+<tr class="even">
+<td align="left">Mainly natural</td>
+<td align="right">6.8</td>
+</tr>
+<tr class="odd">
+<td align="left">Equally natural and human</td>
+<td align="right">43.0</td>
+</tr>
+<tr class="even">
+<td align="left">Mainly human</td>
+<td align="right">38.8</td>
+</tr>
+<tr class="odd">
+<td align="left">Entirely human</td>
+<td align="right">9.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="climate-change-and-individual-responsibility" class="section level6">
+<h6>Climate change and individual responsibility</h6>
 <pre class="r"><code>summary(ESS11$clim_change_resp)</code></pre>
 <pre><code>##    Low Medium   High   NA&#39;s 
 ##   4741  19736  12768   2911</code></pre>
-<pre class="r"><code>prop.table(table(ESS11$clim_change_resp))</code></pre>
-<pre><code>## 
-##       Low    Medium      High 
-## 0.1272923 0.5298966 0.3428111</code></pre>
+<pre class="r"><code>prop_table &lt;- prop.table(table(ESS11$clim_change_resp))
+
+table_out &lt;- data.frame(
+  Responsibility = names(prop_table),
+  Percentage = round(as.numeric(prop_table) * 100, 1)
+)
+
+kable(table_out, caption = &quot;Perceived personal responsibility for reducing climate change (in %)&quot;)</code></pre>
+<table>
+<caption>Perceived personal responsibility for reducing climate change
+(in %)</caption>
+<thead>
+<tr class="header">
+<th align="left">Responsibility</th>
+<th align="right">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Low</td>
+<td align="right">12.7</td>
+</tr>
+<tr class="even">
+<td align="left">Medium</td>
+<td align="right">53.0</td>
+</tr>
+<tr class="odd">
+<td align="left">High</td>
+<td align="right">34.3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="education" class="section level6">
+<h6>Education</h6>
 <pre class="r"><code>summary(ESS11$edulvlb)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     0.0   313.0   322.0   443.2   610.0  9999.0</code></pre>
@@ -456,9 +524,38 @@ distribution of the variables.</p>
 ## 0.0204203606 0.1052146628 0.0111564897 0.0032124714 0.0016684929 0.0009961152 
 ##         9999 
 ## 0.0007719892</code></pre>
+<pre class="r"><code>table_out &lt;- data.frame(
+  Education = names(prop_table),
+  Percentage = round(as.numeric(prop_table) * 100, 1)
+)
+kable(table_out, caption = &quot;Percentage of respondents by education level&quot;)</code></pre>
+<table>
+<caption>Percentage of respondents by education level</caption>
+<thead>
+<tr class="header">
+<th align="left">Education</th>
+<th align="right">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Low</td>
+<td align="right">12.7</td>
+</tr>
+<tr class="even">
+<td align="left">Medium</td>
+<td align="right">53.0</td>
+</tr>
+<tr class="odd">
+<td align="left">High</td>
+<td align="right">34.3</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>summary(ESS11$edlvfit)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
 ##    1.00    4.00    8.00   72.17    9.00 9999.00   37291</code></pre>
+</div>
 </div>
 <div id="plots" class="section level4">
 <h4>Plots</h4>
