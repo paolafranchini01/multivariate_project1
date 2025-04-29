@@ -120,3 +120,44 @@ prop.table(table(ESS11$edulvlb))
 #toward climate change vary across those groups
 summary(ESS11$edlvfit)
 
+ESS11$edulvlb_clean <- NA
+#I selected the codes assigned in the questionnaire for the variable edulvlb; 
+#I thought the best approach would be to remove the values with code 0 (not applicable), 
+#5555 (Other), 7777 (Refusal), 8888 (Don't know), 9999 (No answer) because I don't find 
+#them useful for the analysis. 
+#Then, I created a new variable that assigns a score on a scale from 1 to 7, 
+#categorizing the education levels in order to have a numerical score to use in a 
+#scale for comparing the average education values across different countries
+
+ESS11$edulvlb_clean[ESS11$edulvlb %in% c(113, 129)] <- 1  
+ESS11$edulvlb_clean[ESS11$edulvlb %in% c(131:223)] <- 2  
+ESS11$edulvlb_clean[ESS11$edulvlb %in% c(321:323, 412, 413)] <- 3 
+ESS11$edulvlb_clean[ESS11$edulvlb %in% c(421:423)] <- 4  
+ESS11$edulvlb_clean[ESS11$edulvlb %in% c(510:520)] <- 5 
+ESS11$edulvlb_clean[ESS11$edulvlb %in% c(610, 620)] <- 6 
+ESS11$edulvlb_clean[ESS11$edulvlb == 800] <- 7  
+
+#I remove the NA values
+ESS11_clean <- ESS11[!is.na(ESS11$edulvlb_clean), ]
+
+education <- ESS11_clean %>%
+  group_by(cntry) %>%
+  summarise(media_edulvlb = mean(edulvlb_clean)) %>%
+  arrange(desc(media_edulvlb))
+
+#to visualize graphically tha average of levels of education over EU,
+#we can see that NO has the higher level and PT the lowest
+#what if we compare the attitudes toward climate change of those 2 countries?
+ggplot(education, aes(x = reorder(cntry, media_edulvlb), y = media_edulvlb)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Average of higher level of education (ESS11)",
+       x = "Country", y = "Average level of education (1 = low, 7 = high)") +
+  theme_minimal()
+
+
+
+
+
+
+
