@@ -155,7 +155,7 @@ ggplot(education, aes(x = reorder(cntry, media_edulvlb), y = media_edulvlb)) +
        x = "Country", y = "Average level of education (1 = low, 7 = high)") +
   theme_minimal()
 
-
+#tentativo
 
 
 
