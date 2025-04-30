@@ -89,6 +89,7 @@ ESS11 <- ESS11 %>%
     clim_change_resp = factor(clim_change_resp, levels = c("Low", "Medium", "High"), ordered = TRUE)
   )
 
+summary(ESS11$clim_change_resp)
 #adding a plot to visualize distribution
 ESS11 |> 
   filter(!is.na(clim_change_resp)) |>  #I want to exclude NAs from the bar graph
@@ -120,3 +121,5 @@ prop.table(table(ESS11$edulvlb))
 #toward climate change vary across those groups
 summary(ESS11$edlvfit)
 
+
+install.packages("knitr")
